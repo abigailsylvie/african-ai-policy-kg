@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>African AI Policy Knowledge Graph</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --bg-subtle: #f9f9f8;
+      --bg-surface: #f4f3f0;
+      --border: #e5e4e0;
+      --border-strong: #c8c7c2;
+      --text-primary: #1a1a18;
+      --text-secondary: #6b6b66;
+      --text-muted: #9b9b96;
+      --accent: #1a3a2a;
+      --accent-light: #e8f0eb;
+      --accent-text: #0f2a1a;
+      --danger-bg: #fdf2f2;
+      --danger-text: #8b2020;
+      --danger-border: #e8c4c4;
+    }
+
+    html { font-size: 15px; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg-subtle);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    nav {
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2.5rem;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    .nav-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .nav-tag {
+      font-size: 0.7rem;
+      font-weight: 500;
+      background: var(--accent-light);
+      color: var(--accent-text);
+      padding: 3px 10px;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem;
+    }
+
+    .hero {
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+
+    .hero p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      max-width: 560px;
+      line-height: 1.7;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 2.5rem;
+    }
+
+    .metric {
+      background: var(--bg);
+      padding: 1.25rem 1.5rem;
+    }
+
+    .metric-value {
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 0.35rem;
+    }
+
+    .metric-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .metric-value.policy { color: #2d6a4f; }
+    .metric-value.missing { color: #8b4513; }
+
+    .card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.2rem;
+    }
+
+    .card-desc {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .card-body {
+      padding: 1.5rem;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    select {
+      width: 100%;
+      padding: 0.65rem 1rem;
+      font-size: 0.875rem;
+      font-family: inherit;
+      color: var(--text-primary);
+      background: var(--bg);
+      border: 1px solid var(--border-strong);
+      border-radius: 7px;
+      outline: none;
+      appearance: none;
+      cursor: pointer;
+      margin-bottom: 1rem;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b6b66' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 2rem;
+    }
+
+    select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-light);
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0.65rem 1.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      font-family: inherit;
+      color: #fff;
+      background: var(--accent);
+      border: none;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: background 0.15s, opacity 0.15s;
+    }
+
+    .btn-primary:hover { background: #0f2a1a; }
+    .btn-primary:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0.4rem 0.9rem;
+      font-size: 0.775rem;
+      font-weight: 500;
+      font-family: inherit;
+      color: var(--text-secondary);
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-ghost:hover {
+      background: var(--bg-surface);
+      color: var(--text-primary);
+    }
+
+    .status-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 0;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .spinner {
+      width: 15px;
+      height: 15px;
+      border: 1.5px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .result-area {
+      display: none;
+      margin-top: 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .result-area.visible { display: block; }
+
+    .result-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-subtle);
+    }
+
+    .result-country {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .result-body {
+      padding: 1.25rem;
+      font-size: 0.85rem;
+      line-height: 1.9;
+      color: var(--text-primary);
+      white-space: pre-wrap;
+      max-height: 480px;
+      overflow-y: auto;
+      background: var(--bg);
+    }
+
+    .error-banner {
+      display: none;
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      background: var(--danger-bg);
+      border: 1px solid var(--danger-border);
+      border-radius: 7px;
+      font-size: 0.8rem;
+      color: var(--danger-text);
+    }
+
+    .error-banner.visible { display: block; }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .tag {
+      font-size: 0.775rem;
+      padding: 4px 10px;
+      border-radius: 5px;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      background: var(--bg);
+      cursor: pointer;
+      transition: all 0.12s;
+    }
+
+    .tag:hover {
+      border-color: var(--accent);
+      color: var(--accent-text);
+      background: var(--accent-light);
+    }
+
+    .tag.policy {
+      background: #f0f7f3;
+      border-color: #b8d8c4;
+      color: #2d6a4f;
+      cursor: default;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    footer p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div>
+    <span class="nav-brand">African AI Policy Knowledge Graph</span>
+    <span class="nav-sub"> &nbsp;/&nbsp; Policy Intelligence Platform</span>
+  </div>
+  <span class="nav-tag">GraphRAG</span>
+</nav>
+
+<div class="page">
+
+  <div class="hero">
+    <h1>AI Policy Intelligence for Africa</h1>
+    <p>A knowledge graph built from real African AI policy documents,  currently loaded: Kenya, Rwanda, Ghana, Zambia, and the African Union Continental Strategy. More countries being added. Analyze existing frameworks and generate evidence-based policy suggestions for countries without one.</p>
+  
+  
+  </div>
+
+  <div class="metrics" id="metrics">
+    <div class="metric">
+      <div class="metric-value policy" id="stat-with">—</div>
+      <div class="metric-label">Countries loaded in graph</div>
+    </div>
+    <div class="metric">
+      <div class="metric-value missing" id="stat-without">—</div>
+      <div class="metric-label">Countries without policy</div>
+    </div>
+    <div class="metric">
+      <div class="metric-value">54</div>
+      <div class="metric-label">African countries total</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Generate a policy suggestion</div>
+      <div class="card-desc">Select a country without an AI policy. The system will query the knowledge graph and generate a tailored framework.</div>
+    </div>
+    <div class="card-body">
+      <label class="field-label" for="country-select">Target country</label>
+      <select id="country-select">
+        <option value="">Loading countries...</option>
+      </select>
+
+      <button class="btn-primary" id="suggest-btn" onclick="suggestPolicy()" disabled>
+        Generate policy suggestion
+      </button>
+
+      <div class="status-row" id="loading" style="display:none;">
+        <div class="spinner"></div>
+        <span>Querying knowledge graph and generating suggestion...</span>
+      </div>
+
+      <div class="error-banner" id="error-msg"></div>
+
+      <div class="result-area" id="result-area">
+        <div class="result-toolbar">
+          <span class="result-country" id="result-label">Policy suggestion</span>
+          <button class="btn-ghost" onclick="copyResult()">Copy text</button>
+        </div>
+        <div class="result-body" id="result-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Countries in the knowledge graph</div>
+      <div class="card-desc">Countries with existing policies are used as reference. Click any country without a policy to select it above.</div>
+    </div>
+    <div class="card-body">
+      <div class="section-label">With AI policy</div>
+      <div class="tag-list" id="with-list"></div>
+      <div class="section-label">Without AI policy</div>
+      <div class="tag-list" id="without-list"></div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>Built with Neo4j · Groq · FastAPI · pdfplumber</p>
+  <p>African Union Continental AI Strategy 2025–2030</p>
+</footer>
+
+<script>
+  const API = 'http://localhost:8000'
+
+  async function loadData() {
+    try {
+      const res = await fetch(`${API}/summary`)
+      const data = await res.json()
+
+      document.getElementById('stat-with').textContent = data.countries_with_policy.length
+      document.getElementById('stat-without').textContent = data.total_without_policy
+
+      const withList = document.getElementById('with-list')
+      data.countries_with_policy.forEach(c => {
+        withList.innerHTML += `<span class="tag policy">${c}</span>`
+      })
+
+      const withoutList = document.getElementById('without-list')
+      const select = document.getElementById('country-select')
+      select.innerHTML = '<option value="">Select a country...</option>'
+
+      data.countries_without_policy.forEach(c => {
+        withoutList.innerHTML += `<span class="tag" onclick="selectCountry('${c}')">${c}</span>`
+        select.innerHTML += `<option value="${c}">${c}</option>`
+      })
+
+      document.getElementById('suggest-btn').disabled = false
+
+    } catch (e) {
+      showError('Cannot connect to API. Make sure the API server is running: uvicorn api:app --reload')
+    }
+  }
+
+  function selectCountry(name) {
+    document.getElementById('country-select').value = name
+    document.querySelector('.card').scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+  async function suggestPolicy() {
+    const country = document.getElementById('country-select').value
+    if (!country) return
+
+    const btn = document.getElementById('suggest-btn')
+    const loading = document.getElementById('loading')
+    const resultArea = document.getElementById('result-area')
+    const errorMsg = document.getElementById('error-msg')
+
+    btn.disabled = true
+    loading.style.display = 'flex'
+    resultArea.classList.remove('visible')
+    errorMsg.classList.remove('visible')
+
+    try {
+      const res = await fetch(`${API}/suggest/${encodeURIComponent(country)}`, { method: 'POST' })
+      if (!res.ok) throw new Error(`Server error ${res.status}`)
+      const data = await res.json()
+
+      document.getElementById('result-label').textContent = `${data.country} — AI policy suggestion`
+      document.getElementById('result-body').textContent = data.suggestion
+      resultArea.classList.add('visible')
+
+    } catch (e) {
+      showError(`Failed to generate suggestion: ${e.message}`)
+    } finally {
+      btn.disabled = false
+      loading.style.display = 'none'
+    }
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('error-msg')
+    el.textContent = msg
+    el.classList.add('visible')
+  }
+
+  function copyResult() {
+    const text = document.getElementById('result-body').textContent
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.querySelector('.btn-ghost')
+      btn.textContent = 'Copied'
+      setTimeout(() => btn.textContent = 'Copy text', 2000)
+    })
+  }
+
+  loadData()
+</script>
+</body>
+</html>
