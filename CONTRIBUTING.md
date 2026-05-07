@@ -20,7 +20,7 @@ Countries we still need (among others):
 
 ### How to find the right document
 
-Look for official government sources — ministry of technology, ministry of digital affairs, or the national AI council. The document should be:
+Look for official government sources, ministry of technology, ministry of digital affairs, or the national AI council. The document should be:
 - An official national AI strategy or policy
 - Downloadable as a PDF
 - In English or French (both work)
@@ -50,19 +50,19 @@ The first word of the filename is used as the country name in the graph, so keep
    - The source URL where you found the document
    - The year of the document
 
-That's it. We handle the rest — running the pipeline, updating the graph, and deploying.
+That's it. We handle the rest,  running the pipeline, updating the graph, and deploying.
 
 ---
 
 ## Other Ways to Contribute
 
-**Fix a bug** — open an issue or submit a PR directly.
+**Fix a bug**  open an issue or submit a PR directly.
 
-**Improve entity extraction** — the prompts in `src/entity_extractor.py` can always be better. If you notice the LLM missing important pillars or goals from a document, suggest an improved prompt.
+**Improve entity extraction**  the prompts in `src/entity_extractor.py` can always be better. If you notice the LLM missing important pillars or goals from a document, suggest an improved prompt.
 
-**Improve the frontend** — the UI in `frontend/index.html` is intentionally simple. If you have design or frontend skills, improvements are welcome.
+**Improve the frontend**  the UI in `frontend/index.html` is intentionally simple. If you have design or frontend skills, improvements are welcome.
 
-**Add a new country to the "no policy" list** — if you know an African country that should be in the graph but isn't listed in `src/graph_loader.py`, open a PR to add it.
+**Add a new country to the "no policy" list**  if you know an African country that should be in the graph but isn't listed in `src/graph_loader.py`, open a PR to add it.
 
 ---
 
