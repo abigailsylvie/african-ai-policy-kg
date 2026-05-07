@@ -1,4 +1,4 @@
-# 🌍 African AI Policy Knowledge Graph
+#  African AI Policy Knowledge Graph
 
 > *What if we could use existing African AI policies to help countries that don't have one yet?*
 
